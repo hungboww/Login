@@ -8,19 +8,19 @@ const params = {
     database:config.mysql.database
 }
 
-
-const Connect = async () => new Promise<mysql.Connection>((resolve,reject)   => {
-    const connections = mysql.createConnection(params);
-    connections.connect((error)=>{
+const Connect = async () => new Promise<mysql.Connection>((resolve,reject)  => {
+    const  connection =  mysql.createConnection(params);
+    connection.connect((error)=>{
         if (error){
             reject(error);
             return;
         }
-        resolve(connections)
+        resolve(connection)
     })
 })
 
-const Query = async <T>(connection:mysql.Connection, query:string) => new Promise((resolve,reject)=>{
+const Query = async <T>(connection:mysql.Connection, query:string) =>
+    new Promise((resolve,reject)=>{
     connection.query(query,connection,(error,result) =>{
         if (error){
             reject(error);
