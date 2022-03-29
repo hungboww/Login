@@ -3,9 +3,11 @@ import express, {Router} from "express";
 
 const router = express.Router()
 
-router.get('/validate', getUser)
-router.get('/register', getUser)
-router.get('/login', getUser)
+
+router.get('/users',getUser)
+router.get('/validate', validateToken)
+router.get('/register', register)
+// router.get('/login', register)
 router.get('/get/all', getUser)
 
 export = router

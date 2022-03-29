@@ -20,7 +20,7 @@ export async function getUser(req:Request,res:Response, next:NextFunction){
     let query = 'SELECT * FROM  users';
     Connect()
         .then(connection =>{
-            Query(connection,query)
+            Query<IUser>(connection,query)
                 .then(results=>{
                     return res.status(200).json({
                         results
@@ -57,49 +57,56 @@ export  function register(req:Request,res:Response, next:Function){
             message: hashError.message,
             error: hashError
         });
-
     }
-            let query=`INSERT INTO users(id,name,password,email) VALUES ("${id}","${name}","${hash}","email")`;
-Connect()
-    .then(connection =>{
-        Query(connection,query)
-            .then((result)=>{
-                // @ts-ignore
-                logging.info(NAMESPACE,`User ID ${result.insertId} inserted`)
-                return res.status(201).json(result)
-            })
-            .catch((error)=>{
-                logging.error(NAMESPACE,error.message,error);
-                return res.status(500).json({
-                    message:error.message,error})
-            });
-    })
-    .catch(error=>{
-        logging.error(NAMESPACE,error.message,error);
-        return res.status(500).json({message:error.message,error})
-    })
-    })
-}
-export function login(req:Request,res:Response,next:Function){
-    let{name, password} = req.body;
-    let query = `SELECT * FROM users WHERE name = '${name}'`;
+    let query=`INSERT INTO users(id,name,password,email) VALUES ("${id}","${name}","${hash}","email")`;
     Connect()
-    .then(connection =>{
-        Query(connection,query)
-            .then((result)=>{
-                // @ts-ignore
-                logging.info(NAMESPACE,`User ID ${result.insertId} inserted`)
-                return res.status(201).json(result)
-            })
-            .catch((error)=>{
-                logging.error(NAMESPACE,error.message,error);
-                return res.status(500).json({
-                    message:error.message,error})
-            });
-    })
+        .then(connection=>{
+            Query<IUser>(connection,query)
+                .then((result)=>{
+
+                    return res.status(200).json(result
+                    )
+                })
+        })         
     .catch(error=>{
         logging.error(NAMESPACE,error.message,error);
-        return res.status(500).json({message:error.message,error})
+        return res.status(500).json({
+            message:error.message,error
+        })
     })
-}
+    })
+ }
+// export function login(req:Request,res:Response,next:Function){
+//     let{name, password} = req.body;
+//     let query = `SELECT * FROM users WHERE name = '${name}'`;
+//     Connect()
+//     .then(connection =>{
+//         Query<IUser[]>(connection,query)
+//             .then((users)=>{
+//                 bcryptjs.compare(password,users[0].password,(error,result) =>{
+//                     if (error){
+//                         return res.status(401).json({message:error.message,error})
+//                     }
+//                     else if (result){
+//                         signJWT(users[0],(_error,token) =>{
+//                             if(_error){
+//                                 return res.status(401).json({message:"unable to sign jwt",error:_error})
+//                             }
+//                         })
+//                     }
+//                 })
+//
+//
+//             })
+//             .catch((error)=>{
+//                 logging.error(NAMESPACE,error.message,error);
+//                 return res.status(500).json({
+//                     message:error.message,error})
+//             });
+//     })
+//     .catch(error=>{
+//         logging.error(NAMESPACE,error.message,error);
+//         return res.status(500).json({message:error.message,error})
+//     })
+// }
 
