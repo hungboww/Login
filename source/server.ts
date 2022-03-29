@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import logging from "./config/logging";
 import config from "./config/config";
 import {resolveObjectURL} from "buffer";
-import sampleRoutes from './routes/sample'
+import sampleRoutes from './routes/login'
 const NAMESPACE = 'Server';
 const router = express();
 
@@ -29,9 +29,9 @@ router.use((req, res, next)=>{
     }
     next();
 })
-router.use('/sample',sampleRoutes)
+router.use('/api',sampleRoutes)
 router.use((req, res, next) => {
-    const error = new Error('not found');
+    const error = new Error('not found!!');
 
     return res.status(404).json({
         message: error.message

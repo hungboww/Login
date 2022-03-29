@@ -3,7 +3,7 @@ import logging from "../config/logging";
 import {Connect, Query} from "../config/mysql";
 import bcryptjs, {hash} from 'bcryptjs'
 import {signJWT} from "../functions/signJWT";
-import IUser from "../interfaces/user";
+import {IUser} from "../interfaces/user";
 const NAMESPACE = 'User'
 
 const sampleHealthCheck = (req:Request,res:Response, next:NextFunction) =>{
@@ -103,28 +103,26 @@ export async function registerUser(req:Request,res:Response, next:NextFunction) 
 //     })
 //     })
 //  }
-export function login(req:Request,res:Response,next:Function){
+export  async function login(req:Request,res:Response,next:Function){
     let{name, password} = req.body;
     let query = `SELECT * FROM users WHERE name = '${name}'`;
     Connect()
-    .then(connection =>{
+    .then((connection) =>{
         Query<IUser[]>(connection,query)
             .then((users)=>{
-                console.log(users)
-                // bcryptjs.compare(password,users[0].password,(error,result) =>{
-                //     if (error){
-                //         return res.status(401).json({message:error.message,error})
-                //     }
-                //     else if (result){
-                //         signJWT(users[0],(_error,token) =>{
-                //             if(_error){
-                //                 return res.status(401).json({message:"unable to sign jwt",error:_error})
-                //             }
-                //         })
-                //     }
-                // })
-
-
+                if (!users) return res.status(400).json({ msg: "User not exist" })
+                bcryptjs.compare(password,users[0].password,(error,result) =>{
+                    if (error){
+                        return res.status(401).json({message:error.message,error})
+                    }
+                    else if (result){
+                        signJWT(users[0],(_error,token) =>{
+                            if(_error){
+                                return res.status(401).json({message:"unable to sign jwt",error:_error})
+                            }
+                        })
+                    }
+                })
             })
             .catch((error)=>{
                 logging.error(NAMESPACE,error.message,error);

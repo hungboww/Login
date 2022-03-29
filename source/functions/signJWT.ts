@@ -1,20 +1,20 @@
 import jwt from 'jsonwebtoken';
 import config from'../config/config';
 import logging from "../config/logging";
-import IUser from "../interfaces/user";
+import {IUser} from "../interfaces/user";
 
 const NAMESPACE = 'Auth';
 
-export function signJWT(user:IUser, callback:(error:Error | null, token:string | null)=>void):void {
+export function signJWT(users:IUser, callback:(error:Error | null, token:string | null)=>void):void {
     var timeSinchEpoch = new Date().getTime;
     var expirationTime = timeSinchEpoch() + Number(config.server.token.expireTime) * 100000;
     var expirationTimeInSeconds = Math.floor(expirationTime / 1000);
-    logging.info(NAMESPACE,`Sign token for ${user.name}`)
+    logging.info(NAMESPACE,`Sign token for ${users.name}`)
 
 try {
         jwt.sign(
             {
-                name: user.name
+                name: users.name
             },
             config.server.token.secret,
             {
@@ -35,4 +35,4 @@ try {
     }
 };
 
-export default signJWT;
+// export default signJWT;
