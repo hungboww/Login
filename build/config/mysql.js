@@ -51,13 +51,13 @@ var params = {
 var Connect = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         return [2 /*return*/, new Promise(function (resolve, reject) {
-                var connections = mysql_1.default.createConnection(params);
-                connections.connect(function (error) {
+                var connection = mysql_1.default.createConnection(params);
+                connection.connect(function (error) {
                     if (error) {
                         reject(error);
                         return;
                     }
-                    resolve(connections);
+                    resolve(connection);
                 });
             })];
     });

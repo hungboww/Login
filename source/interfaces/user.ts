@@ -7,3 +7,7 @@ interface UserArr{
     password:string,
     email:string
 }
+export interface ILogin{
+    name:string,
+    password:string
+}

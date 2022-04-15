@@ -8,7 +8,8 @@ var express_1 = __importDefault(require("express"));
 var body_parser_1 = __importDefault(require("body-parser"));
 var logging_1 = __importDefault(require("./config/logging"));
 var config_1 = __importDefault(require("./config/config"));
-var sample_1 = __importDefault(require("./routes/sample"));
+var login_1 = __importDefault(require("./routes/login"));
+// import extractJWT from './middleware/extractJWT'
 var NAMESPACE = 'Server';
 var router = (0, express_1.default)();
 router.use(function (req, res, next) {
@@ -29,9 +30,10 @@ router.use(function (req, res, next) {
     }
     next();
 });
-router.use('/sample', sample_1.default);
+router.use('/api');
+router.use('/api', login_1.default);
 router.use(function (req, res, next) {
-    var error = new Error('not found');
+    var error = new Error('not found!!');
     return res.status(404).json({
         message: error.message
     });

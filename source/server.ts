@@ -5,6 +5,7 @@ import logging from "./config/logging";
 import config from "./config/config";
 import {resolveObjectURL} from "buffer";
 import sampleRoutes from './routes/login'
+// import extractJWT from './middleware/extractJWT'
 const NAMESPACE = 'Server';
 const router = express();
 
@@ -22,6 +23,7 @@ router.use(bodyParser.json())
 router.use((req, res, next)=>{
     res.header('Access-Control-Allow-Origin','*');
     res.header('Access-Control-Allow-Origin','Origin, x-Requested-With, Content-Type,Accept,Authorization');
+
     if(req.method =='OPTIONS')
     {
         res.header('Access-Control-Allow-Methods','GET PATCH DELETE POST PUT');
@@ -29,6 +31,7 @@ router.use((req, res, next)=>{
     }
     next();
 })
+router.use('/api',)
 router.use('/api',sampleRoutes)
 router.use((req, res, next) => {
     const error = new Error('not found!!');

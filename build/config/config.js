@@ -17,7 +17,7 @@ var MYSQL = {
     password: MYSQL_PASSWORD
 };
 var SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
-var SERVER_PORT = process.env.PORT || 1337;
+var SERVER_PORT = process.env.PORT || 3000;
 var SERVER_TOKEN_EXPIRETIME = process.env.SERVER_TOKEN_EXPIRETIME || 3600;
 var SERVER_TOKEN_ISSUER = process.env.SERVER_TOKEN_ISSUER || 'coolIssuer';
 var SERVER_TOKEN_SECRET = process.env.SERVER_TOKEN_SECRET || 'superencryptedsecret';
